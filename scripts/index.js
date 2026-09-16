@@ -26,7 +26,7 @@ togglePassword.addEventListener("click", () => {
     data: { session },
   } = await supabaseClient.auth.getSession();
   if (session) {
-    window.location.href = "Dashboard.html";
+    window.location.href = "dashboard.html";
   }
 })();
 
@@ -53,5 +53,5 @@ loginForm.addEventListener("submit", async (e) => {
     return;
   }
 
-  window.location.href = "Dashboard.html";
+  window.location.href = "dashboard.html";
 });
