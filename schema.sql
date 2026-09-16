@@ -1,4 +1,4 @@
--- Run this once in Supabase Dashboard → SQL Editor
+-- Run this once during setup
 
 create table if not exists public.loans (
   id uuid primary key default gen_random_uuid(),
@@ -15,6 +15,9 @@ create table if not exists public.loans (
 
 alter table public.loans enable row level security;
 
+grant usage on schema public to anon, authenticated;
+grant select, insert, update on public.loans to anon, authenticated;
+
 -- Anyone (a borrower, with no login) can check a book out.
 create policy "Anyone can create a loan"
 on public.loans
@@ -22,10 +25,6 @@ for insert
 to anon, authenticated
 with check (true);
 
--- Anyone can check a book back in, but only rows that are currently
--- checked out can be touched, and this policy does NOT let them read
--- the whole table — only update a row they can already name
--- (by matching email + title in the query).
 create policy "Anyone can return a checked out book"
 on public.loans
 for update

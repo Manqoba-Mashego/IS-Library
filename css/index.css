@@ -178,7 +178,47 @@ h1 u {
   transform: none;
 }
 
-/* small addition: feedback line under the login form */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 42px;
+}
+
+.librarian .password-field button.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: auto;
+  margin-top: 0;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #5b6b85;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.librarian .password-field button.toggle-password:hover {
+  background: transparent;
+  color: var(--paper);
+  transform: translateY(-50%);
+}
+
+.librarian .password-field button.toggle-password:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+
+.toggle-password svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
 .form-message {
   min-height: 16px;
   margin: -4px 0 0;
