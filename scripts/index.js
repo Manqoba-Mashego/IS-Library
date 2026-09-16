@@ -1,7 +1,6 @@
 const loginForm = document.getElementById("login-form");
 const loginMessage = document.getElementById("login-message");
 const loginButton = document.getElementById("login-button");
-
 const passwordInput = document.getElementById("password");
 const togglePassword = document.getElementById("toggle-password");
 
@@ -14,17 +13,12 @@ togglePassword.addEventListener("click", () => {
   const isHidden = passwordInput.type === "password";
   passwordInput.type = isHidden ? "text" : "password";
   togglePassword.innerHTML = isHidden ? eyeOffIcon : eyeIcon;
-  togglePassword.setAttribute(
-    "aria-label",
-    isHidden ? "Hide password" : "Show password",
-  );
+  togglePassword.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
 });
 
 // If a librarian is already logged in, skip straight to the dashboard.
 (async () => {
-  const {
-    data: { session },
-  } = await supabaseClient.auth.getSession();
+  const { data: { session } } = await supabaseClient.auth.getSession();
   if (session) {
     window.location.href = "dashboard.html";
   }
@@ -40,10 +34,7 @@ loginForm.addEventListener("submit", async (e) => {
   loginMessage.className = "form-message info";
   loginButton.disabled = true;
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { error } = await supabaseClient.auth.signInWithPassword({email, password});
 
   loginButton.disabled = false;
 

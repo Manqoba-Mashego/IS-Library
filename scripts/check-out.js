@@ -1,4 +1,3 @@
-
 const form = document.getElementById("checkout-form");
 const message = document.getElementById("form-message");
 const submitButton = document.getElementById("submit-button");

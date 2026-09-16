@@ -1,4 +1,3 @@
-
 const form = document.getElementById("checkin-form");
 const message = document.getElementById("form-message");
 const submitButton = document.getElementById("submit-button");
@@ -8,17 +7,13 @@ form.addEventListener("submit", async (e) => {
 
     const email = document.getElementById("email").value.trim();
     const title = document.getElementById("title").value.trim();
-    const returnDate =
-        document.getElementById("date").value ||
-        new Date().toISOString().slice(0, 10);
+    const returnDate = document.getElementById("date").value || new Date().toISOString().slice(0, 10);
 
     message.textContent = "Submitting…";
     message.className = "form-message info";
     submitButton.disabled = true;
 
-    // Only a loan that matches this email + title AND is still "checked_out" gets updated
-    const { data, error } = await supabaseClient
-        .from("loans")
+    const { data, error } = await supabaseClient.from("loans")
         .update({ status: "returned", return_date: returnDate })
         .eq("email", email)
         .eq("book_title", title)

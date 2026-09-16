@@ -1,33 +1,27 @@
-
 let allLoans = [];
 let currentFilter = "all";
 
-function showError(msg) {
+const showError = (msg) => {
     const banner = document.getElementById("error-banner");
     banner.textContent = msg;
     banner.style.display = "block";
 }
 
-async function guard() {
-    const {
-        data: { session },
-    } = await supabaseClient.auth.getSession();
+const guard = async () => {
+    const {data: { session }} = await supabaseClient.auth.getSession();
     if (!session) {
-        window.location.href = "Cover page.html";
+        window.location.href = "/";
         return false;
     }
     return true;
 }
 
-function render() {
+const render = () => {
     const tbody = document.getElementById("loans-body");
     const table = document.getElementById("loans-table");
     const empty = document.getElementById("empty");
 
-    const filtered =
-        currentFilter === "all"
-            ? allLoans
-            : allLoans.filter((l) => l.status === currentFilter);
+    const filtered = currentFilter === "all" ? allLoans : allLoans.filter((l) => l.status === currentFilter);
 
     tbody.innerHTML = "";
 
@@ -63,23 +57,16 @@ function render() {
     });
 }
 
-function updateStats() {
+const updateStats = () => {
     document.getElementById("stat-total").textContent = allLoans.length;
-    document.getElementById("stat-active").textContent = allLoans.filter(
-        (l) => l.status === "checked_out",
-    ).length;
-    document.getElementById("stat-returned").textContent = allLoans.filter(
-        (l) => l.status === "returned",
-    ).length;
+    document.getElementById("stat-active").textContent = allLoans.filter((l) => l.status === "checked_out").length;
+    document.getElementById("stat-returned").textContent = allLoans.filter((l) => l.status === "returned").length;
 }
 
-async function loadLoans() {
+const loadLoans = async () => {
     document.getElementById("loading").style.display = "block";
 
-    const { data, error } = await supabaseClient
-        .from("loans")
-        .select("*")
-        .order("created_at", { ascending: false });
+    const { data, error } = await supabaseClient.from("loans").select("*").order("created_at", { ascending: false });
 
     document.getElementById("loading").style.display = "none";
 
@@ -93,12 +80,9 @@ async function loadLoans() {
     render();
 }
 
-async function markReturned(id) {
+const markReturned = async (id) => {
     const today = new Date().toISOString().slice(0, 10);
-    const { error } = await supabaseClient
-        .from("loans")
-        .update({ status: "returned", return_date: today })
-        .eq("id", id);
+    const { error } = await supabaseClient.from("loans").update({ status: "returned", return_date: today }).eq("id", id);
 
     if (error) {
         showError("Could not update loan: " + error.message);
@@ -109,18 +93,14 @@ async function markReturned(id) {
 
 document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-        document
-            .querySelectorAll(".filter-btn")
-            .forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         currentFilter = btn.dataset.filter;
         render();
     });
 });
 
-document
-    .getElementById("logout-button")
-    .addEventListener("click", async () => {
+document.getElementById("logout-button").addEventListener("click", async () => {
         await supabaseClient.auth.signOut();
         window.location.href = "/";
     });
