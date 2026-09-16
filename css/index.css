@@ -1,0 +1,205 @@
+:root {
+  --ink: #e8ecf3;
+  --paper: #0a1128;
+  --paper-dim: #0f1c3f;
+  --green: #1e5fa8;
+  --green-dark: #164a86;
+  --brass: #4a90d9;
+  --brass-light: #8ec4f0;
+  --stamp-red: #8b3a3a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+h1 {
+  font-family: "Didot", "Playfair Display", Georgia, serif;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 50px 20px 10px;
+  margin: 0;
+  color: var(--brass-light);
+}
+
+h1 u {
+  text-decoration: none;
+  border-bottom: 3px solid var(--brass);
+  padding-bottom: 6px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 20px 0;
+}
+
+.card {
+  background-color: var(--paper-dim);
+  border: 1px solid var(--brass-light);
+  border-radius: 6px;
+  padding: 30px;
+  width: 220px;
+  box-shadow: 0 2px 0 var(--brass-light);
+}
+
+.card h2 {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--brass-light);
+}
+
+.card .button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--green);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card .button:hover,
+.card .button:focus-visible {
+  background-color: var(--green-dark);
+  transform: translateY(-2px);
+}
+
+.card .button:focus-visible {
+  outline: 3px solid var(--brass);
+  outline-offset: 2px;
+}
+
+.librarian {
+  width: 90%;
+  max-width: 380px;
+  margin: 60px auto 40px;
+  padding: 35px;
+  background: linear-gradient(135deg, var(--green-dark), var(--green));
+  color: var(--ink);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.librarian h2 {
+  margin: 0 0 25px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.librarian h2 u {
+  text-decoration: none;
+  border-bottom: 2px solid var(--brass-light);
+  padding-bottom: 4px;
+}
+
+.librarian form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.librarian label {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brass-light);
+  margin-bottom: -8px;
+}
+
+.librarian input {
+  width: 100%;
+  padding: 12px 13px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+}
+
+.librarian input:focus-visible {
+  box-shadow: 0 0 0 3px var(--brass-light);
+}
+
+.librarian button {
+  width: 100%;
+  background: var(--brass);
+  color: var(--paper);
+  border: none;
+  padding: 13px;
+  margin-top: 5px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.librarian button:hover {
+  background: var(--brass-light);
+  transform: translateY(-2px);
+}
+
+.librarian button:focus-visible {
+  outline: 3px solid var(--paper);
+  outline-offset: 2px;
+}
+
+.librarian button:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+/* small addition: feedback line under the login form */
+.form-message {
+  min-height: 16px;
+  margin: -4px 0 0;
+  font-size: 13px;
+}
+.form-message.info {
+  color: var(--brass-light);
+}
+.form-message.error {
+  color: #f2a19a;
+}
+
+footer {
+  margin: 40px 0 20px;
+  font-size: 13px;
+  color: #5c7ba8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card .button,
+  .librarian button {
+    transition: none;
+  }
+}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Librarian Dashboard — Imagine Scholar Library</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body>
+    <header>
+      <h1><u>Librarian Dashboard</u></h1>
+      <button id="logout-button">Log Out</button>
+    </header>
+
+    <main>
+      <div id="error-banner"></div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="num" id="stat-total">0</div>
+          <div class="label">Total Loans</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="stat-active">0</div>
+          <div class="label">Checked Out</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="stat-returned">0</div>
+          <div class="label">Returned</div>
+        </div>
+      </div>
+
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="checked_out">
+          Checked Out
+        </button>
+        <button class="filter-btn" data-filter="returned">Returned</button>
+      </div>
+
+      <div id="loading">Loading loans…</div>
+      <div id="empty" style="display: none">No loans to show.</div>
+
+      <table id="loans-table" style="display: none">
+        <thead>
+          <tr>
+            <th>Borrower</th>
+            <th>Email</th>
+            <th>Book</th>
+            <th>Checked Out</th>
+            <th>Due</th>
+            <th>Returned</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="loans-body"></tbody>
+      </table>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="scripts/dashboard.js"></script>
+  </body>
+</html>
