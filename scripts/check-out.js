@@ -9,7 +9,13 @@ form.addEventListener("submit", async (e) => {
     const lastName = document.getElementById("last-name").value.trim();
     const email = document.getElementById("email").value.trim();
     const title = document.getElementById("title").value.trim();
-    const dueDate = document.getElementById("due-date").value || null;
+
+
+    if (!firstName || !lastName || !email || !title) {
+        message.textContent = "Please fill in every field (spaces alone don't count).";
+        message.className = "form-message error";
+        return;
+    }
 
     message.textContent = "Submitting…";
     message.className = "form-message info";
@@ -20,14 +26,17 @@ form.addEventListener("submit", async (e) => {
         last_name: lastName,
         email: email,
         book_title: title,
-        due_date: dueDate,
         status: "checked_out",
     });
 
     submitButton.disabled = false;
 
     if (error) {
-        message.textContent = "Something went wrong: " + error.message;
+        if (error.code === "23505") {
+            message.textContent = `${firstName} ${lastName} already has "${title}" checked out. It needs to be checked in first before another copy can go to the same person.`;
+        } else {
+            message.textContent = "Something went wrong: " + error.message;
+        }
         message.className = "form-message error";
         return;
     }

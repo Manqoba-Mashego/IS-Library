@@ -41,7 +41,6 @@ const render = () => {
             <td data-label="Email">${loan.email}</td>
             <td data-label="Book">${loan.book_title}</td>
             <td data-label="Checked Out">${loan.checkout_date ?? "—"}</td>
-            <td data-label="Due">${loan.due_date ?? "—"}</td>
             <td data-label="Returned">${loan.return_date ?? "—"}</td>
             <td data-label="Status"><span class="status-pill ${loan.status}">${loan.status.replace("_", " ")}</span></td>
             <td data-label=""></td>
