@@ -191,6 +191,21 @@ tr:last-child td {
   background: var(--brass-light);
 }
 
+.pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 18px;
+      }
+      .pagination .filter-btn:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+      #page-indicator {
+        font-size: 13px;
+      }
+
 #loading,
 #empty {
   padding: 30px;

@@ -1,5 +1,7 @@
 let allLoans = [];
 let currentFilter = "all";
+let currentPage = 1;
+const PAGE_SIZE = 15;
 
 const showError = (msg) => {
     const banner = document.getElementById("error-banner");
@@ -16,25 +18,55 @@ const guard = async () => {
     return true;
 }
 
+const getFilteredLoans = () => {
+    return currentFilter === "all" ? allLoans : allLoans.filter((l) => l.status === currentFilter);
+}
+
+const renderPaginationControls = (totalItems) => {
+    const pagination = document.getElementById("pagination");
+    const pageIndicator = document.getElementById("page-indicator");
+    const prevButton = document.getElementById("prev-page");
+    const nextButton = document.getElementById("next-page");
+
+    const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+
+    if (totalItems === 0 || totalPages === 1) {
+        pagination.style.display = "none";
+        return;
+    }
+
+    pagination.style.display = "flex";
+    pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === totalPages;
+}
+
 const render = () => {
     const tbody = document.getElementById("loans-body");
     const table = document.getElementById("loans-table");
     const empty = document.getElementById("empty");
 
-    const filtered = currentFilter === "all" ? allLoans : allLoans.filter((l) => l.status === currentFilter);
+    const filtered = getFilteredLoans();
 
     tbody.innerHTML = "";
 
     if (filtered.length === 0) {
         table.style.display = "none";
         empty.style.display = "block";
+        renderPaginationControls(0);
         return;
     }
 
     empty.style.display = "none";
     table.style.display = "table";
 
-    filtered.forEach((loan) => {
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+    pageItems.forEach((loan) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td data-label="Borrower">${loan.first_name} ${loan.last_name}</td>
@@ -54,6 +86,8 @@ const render = () => {
         }
         tbody.appendChild(tr);
     });
+
+    renderPaginationControls(filtered.length);
 }
 
 const updateStats = () => {
@@ -90,13 +124,30 @@ const markReturned = async (id) => {
     loadLoans();
 }
 
-document.querySelectorAll(".filter-btn").forEach((btn) => {
+
+document.querySelectorAll(".filters .filter-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".filters .filter-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         currentFilter = btn.dataset.filter;
+        currentPage = 1;
         render();
     });
+});
+
+document.getElementById("prev-page").addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage -= 1;
+        render();
+    }
+});
+
+document.getElementById("next-page").addEventListener("click", () => {
+    const totalPages = Math.max(1, Math.ceil(getFilteredLoans().length / PAGE_SIZE));
+    if (currentPage < totalPages) {
+        currentPage += 1;
+        render();
+    }
 });
 
 document.getElementById("logout-button").addEventListener("click", async () => {
