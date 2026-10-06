@@ -1,3 +1,6 @@
+import { signInWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
+import { auth } from "../firebase-config";
+
 const loginForm = document.getElementById("login-form");
 const loginMessage = document.getElementById("login-message");
 const loginButton = document.getElementById("login-button");
@@ -10,39 +13,39 @@ const eyeOffIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 togglePassword.innerHTML = eyeIcon;
 
 togglePassword.addEventListener("click", () => {
-  const isHidden = passwordInput.type === "password";
-  passwordInput.type = isHidden ? "text" : "password";
-  togglePassword.innerHTML = isHidden ? eyeOffIcon : eyeIcon;
-  togglePassword.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+    const isHidden = passwordInput.type === "password";
+    passwordInput.type = isHidden ? "text" : "password";
+    togglePassword.innerHTML = isHidden ? eyeOffIcon : eyeIcon;
+    togglePassword.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
 });
 
-// If a librarian is already logged in, skip straight to the dashboard.
-(async () => {
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session) {
-    window.location.href = "dashboard.html";
-  }
-})();
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        window.location.href = "dashboard.html";
+    }
+});
+
 
 loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const email = document.getElementById("login-email").value.trim();
-  const password = document.getElementById("password").value;
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("password").value;
 
-  loginMessage.textContent = "Signing in…";
-  loginMessage.className = "form-message info";
-  loginButton.disabled = true;
+    loginMessage.textContent = "Signing in…";
+    loginMessage.className = "form-message info";
 
-  const { error } = await supabaseClient.auth.signInWithPassword({email, password});
+    loginButton.disabled = true;
 
-  loginButton.disabled = false;
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "dashboard.html";
 
-  if (error) {
-    loginMessage.textContent = error.message;
-    loginMessage.className = "form-message error";
-    return;
-  }
-
-  window.location.href = "dashboard.html";
+    } catch (error) {
+        console.error(error);
+        loginMessage.textContent = "Invalid email or password.";
+        loginMessage.className = "form-message error";
+        loginButton.disabled = false;
+    }
 });
